@@ -12,12 +12,21 @@ class Car extends Model {
                 type: DataTypes.STRING,
                 defaultValue: '',
             },
+            image_id: {
+                type: DataTypes.INTEGER,
+                defaultValue: ''
+            },
+            daily_price: {
+                type: DataTypes.FLOAT,
+                defaultValue: ''
+            }
         }, {
             sequelize,
+            paranoid: true,
         })
     }
     static associate(models) {
-        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+        this.belongsTo(models.Admin, { foreignKey: 'admin_id', as: 'admin' });
     }
 }
 

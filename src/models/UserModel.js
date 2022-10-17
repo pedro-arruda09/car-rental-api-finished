@@ -22,6 +22,7 @@ class User extends Model {
             },
         }, {
             sequelize,
+            paranoid: true,
         })
 
         this.addHook('beforeSave', async user => {
@@ -36,7 +37,7 @@ class User extends Model {
     }
 
     static associate(models) {
-        this.hasMany(models.Car, { foreignKey: 'user_id', as: 'car' });
+        this.belongsTo(models.Admin, { foreignKey: 'admin_id', as: 'admin' });
     }
 };
 

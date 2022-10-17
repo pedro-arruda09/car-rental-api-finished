@@ -1,79 +1,77 @@
-// List dos carros
 const pdf = require('html-pdf');
-const CarModel = require('../models/CarModel');
-const UserModel = require('../models/UserModel');
 const fs = require('fs');
+const pdfService = require('../services/pdfService');
+
+const generatePDF = (pdfTemplate, filePath) => {
+    return new Promise((resolve, reject) => {
+        pdf.create(pdfTemplate, {}).toFile(filePath, (err, result) => {
+            if (err) {
+                reject('Deu erro');
+                return;
+            }
+
+            resolve(result.filename)
+        });
+    })
+}
+const index = async (req, res) => {
+
+    try {
+        const user = await pdfService.index({
+            user_id: req.userId
+        });
+
+        const { user_name, data } = user.reduce((previousObject, currentObject) => {
+            const carData = {
+                id: currentObject.car.id,
+                year: currentObject.car.year,
+                model: currentObject.car.model,
+                chassi: currentObject.car.chassi
+            };
+
+            if (previousObject.user_name) {
+                previousObject.data.push(carData)
+
+                return previousObject;
+            }
+
+            return {
+                user_name: currentObject.name,
+                data: [carData]
+            }
+        }, {});
+
+        let carsHtml = '';
+
+        data.forEach(car => {
+            carsHtml += `
+                <tr>
+                    <td>${car.id}</td>
+                    <td>${car.model}</td>
+                    <td>${car.year}</td>
+                    <td>${car.chassi}</td>
+                </tr>
+            `;
+        });
+
+        let pdfTemplate = fs.readFileSync('html/header.html', 'UTF-8');
+
+        pdfTemplate = pdfTemplate.replace('{{ userName }}', user_name);
+        pdfTemplate = pdfTemplate.replace('{{ carsHtml }}', carsHtml);
+
+        const filePath = `./uploads/carsPDF.pdf`;
+
+        const pdfCreated = await generatePDF(pdfTemplate, filePath);
+
+        res.type('pdf');
+        res.download(pdfCreated);
 
 
-module.exports = {
-    async index(req, res) {
-
-        try {
-            const user = await UserModel.findAll({
-                where: {
-                    id: req.userId
-                },
-                attributes: ['name'],
-                raw: true
-            })
-
-            const userHTML = user.reduce((html, user) => {
-                html += `${user.name}`
-
-                return html;
-            }, '');
-
-            const cars = await CarModel.findAll({
-                where: {
-                    user_id: req.userId
-                },
-                attributes: ['model', 'year', 'chassi'],
-                raw: true
-            });
-
-            const carHTML = cars.reduce((html, car) => {
-                html += `
-                    <tr>
-                        <td>${car.model}</td>
-                        <td>${car.year}</td>
-                        <td>${car.chassi}</td>
-                    </tr>
-                        `
-
-                return html;
-            }, '');
-
-            const head = fs.readFileSync('html/header.html', 'UTF-8');
-
-            const htmlIndex = head + `
-                <h3>Cars of user ${userHTML}</h3>
-                    <table class="table table-dark">
-                        <thead>
-                            <tr>
-                                <th>Model</th>
-                                <th>Year</th>
-                                <th>Chassi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${carHTML}</tbody>
-                    </table>
-                `
-
-            pdf.create(htmlIndex, {}).toFile("./uploads/meupdf.pdf", err => {
-                if (err) {
-                    return res.status(400).json({ error: "Unable to create PDF." });
-                }
-
-                res.type('pdf');
-                res.download('./uploads/meupdf.pdf');
-            });
-        }
-        catch (e) {
-            console.log(e);
-            return res.status(500).json({ error: "The car does not exist." });
-        }
+    } catch (e) {
+        console.log(e);
 
     }
-
 }
-
+module.exports = {
+    index
+};

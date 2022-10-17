@@ -12,7 +12,7 @@ module.exports = {
     body: Yup.object().shape({
       name: Yup.string().required().min(3).max(255),
       email: Yup.string().required(),
-      password: Yup.string().required().min(6).max(50),
+      password: Yup.string().nullable().min(6).max(50),
     }),     
   },
   show: {
@@ -25,4 +25,10 @@ module.exports = {
       id: Yup.number().required(),
     }),
   },
+  rent: {
+    body: Yup.object().shape({
+      car_id: Yup.number().required(),
+      
+    })
+  }
 }

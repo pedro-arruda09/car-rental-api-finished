@@ -16,8 +16,6 @@
         table {
             margin-top: 20px;
             width: 1200px;
-            height: 500px;
-            position: absolute;
         }
 
         h3 {
@@ -27,5 +25,18 @@
         }
     </style>
 </head>
-
+<body>
+    <h3>Cars of user {{ userName }}</h3>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Chassi</th>
+            </tr>
+        </thead>
+        <tbody>{{ carsHtml }}</tbody>
+    </table>
+</body>
 </html>

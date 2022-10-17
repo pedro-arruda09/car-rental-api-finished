@@ -5,7 +5,7 @@ module.exports = {
     async index(req, res) {
         try {
             const cars = await CarService.index({
-                user_id: req.userId
+                admin_id: req.adminId
             });
 
             return utils.handleResponse(res, cars);
@@ -16,10 +16,14 @@ module.exports = {
 
     async store(req, res) {
         try {
-            const createCar = await CarService.store(req);
+            const createCar = await CarService.store({
+                ...req.data,
+                admin_id: req.adminId
+            });
 
             return utils.handleResponse(res, createCar);
         } catch (e) {
+            console.log(e);
             res.status(500).json({ error: e.message });
         }
     },
@@ -28,7 +32,7 @@ module.exports = {
         try {
             const car = await CarService.show({
                 id: req.params.id,
-                user_id: req.userId
+                admin_id: req.adminId
             });
             return utils.handleResponse(res, car);
         } catch (e) {
@@ -39,9 +43,9 @@ module.exports = {
     async update(req, res) {
         try {
             const ID = req.data.id;
-            const user_id = req.userId;
+            const admin_id = req.adminId;
 
-            await CarService.update(req.data, ID, user_id);
+            await CarService.update(req.data, ID, admin_id);
 
             return utils.handleResponse(res, { updated_car: true });
         } catch (e) {
@@ -59,11 +63,12 @@ module.exports = {
 
             await CarService.delete({
                 id: req.params.id,
-                user_id: req.userId
+                admin_id: req.adminId
             });
 
             return utils.handleResponse(res, 'The car was deleted succesfully.');
         } catch (e) {
+            console.log(e);
             return utils.handleError(res, e);
         }
     }

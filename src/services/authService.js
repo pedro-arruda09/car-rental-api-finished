@@ -1,7 +1,8 @@
-const UserModel = require('../models/UserModel');
+const AdminModel = require('../models/AdminModel');
 
 module.exports = {
     store(data) {
-        return UserModel.findOne(data)
+        console.log(data);
+        return AdminModel.findOne(data)
     }
 }
