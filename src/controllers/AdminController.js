@@ -1,7 +1,7 @@
-const adminService = require('../services/adminService');
-const utils = require('../utils/utils');
+import adminService from '../services/adminService.js';
+import utils from '../utils/utils.js';
 
-module.exports = {
+class AdminController {
     async index(req, res) {
         try {
             const admin = await adminService.index({
@@ -12,7 +12,7 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, 'Unable to view admin.')
         }
-    },
+    }
 
     async store(req, res) {
         try {
@@ -25,7 +25,7 @@ module.exports = {
             console.log(e);
             res.status(500).json({ "oi": "oi" });
         }
-    },
+    }
 
     async show(req, res) {
         try {
@@ -35,7 +35,7 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e)
         }
-    },
+    }
 
     async update(req, res) {
         try {
@@ -50,7 +50,7 @@ module.exports = {
         } catch(e) {
             return utils.handleError(res, e)
         }
-    },
+    }
 
     async delete(req, res) {
         try {
@@ -64,3 +64,5 @@ module.exports = {
         }
     }
 }
+
+export default new AdminController();

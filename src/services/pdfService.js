@@ -1,26 +1,69 @@
-const UserModel = require('../models/UserModel');
-const CarModel = require('../models/CarModel');
+import pdf from 'html-pdf';
+import fs from 'fs';
+import UserRentModel from '../models/UserRentModel.js';
+import UserModel from '../models/UserModel.js';
+import CarModel from '../models/CarModel.js';
+import pdfService from '../services/pdfService.js'
 
-const index = async (req, res) => {
+const generatePDF = (pdfTemplate, filePath) => {
+    console.log(pdfTemplate);
+    return new Promise((resolve, reject) => {
+        pdf.create(pdfTemplate, {}).toFile(filePath, (err, result) => {
+            if (err) {
+                reject('Deu erro');
+                return;
+            }
+            resolve(result.filename)
+        });
+    })
+};
 
-    return UserModel.findAll({
-        attributes: ['name', 'id'],
+const index = async () => {
+    const userRent = await UserRentModel.findAll({
         include: [{
+            model: UserModel,
+            attributes: ['name'],
+            as: 'user',
+        }, {
             model: CarModel,
-            where : {
-                user_id: req.user_id
-            },
-            attributes: ['id', 'model', 'year', 'chassi'],
+            attributes: ['model', 'year', 'daily_price'],
             as: 'car'
         }],
-        where: {
-            id: req.user_id
-        },
         raw: true,
-        nest: true
+        nest: true,
+        attributes: [],
+    });
+
+    const user = await UserModel.findOne({
+        attributes: ['name'],
+        raw: true,
     })
+
+    const rentHtml = userRent.reduce((html, current) => {
+
+        html += `
+                    <tr>
+                        <td>${current.user.name}</td>
+                        <td>${current.car.model}</td>
+                        <td>${current.car.year}</td>
+                        <td>${current.car.daily_price}</td>
+                    </tr>
+                `
+
+        return html;
+    }, '');
+
+    let pdfTemplate = fs.readFileSync('html/header.html', 'UTF-8');
+
+    pdfTemplate = pdfTemplate.replace('{{ rentHtml }}', rentHtml);
+    pdfTemplate = pdfTemplate.replace('{{ user }}', user.name);
+
+    const filePath = `./uploads/rentPDF.pdf`;
+
+    return generatePDF(pdfTemplate, filePath);
 }
 
-module.exports = {
-    index
-}
+export default {
+    index,
+    generatePDF
+};

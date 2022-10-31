@@ -22,21 +22,33 @@
             margin-top: 10px;
             margin-left: 232px;
             font-weight: bold;
+            margin-left: 160px;
+        }
+
+        td {
+            max-width: 150px;
+            font-size: 20dp;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
         }
     </style>
 </head>
+
 <body>
-    <h3>Cars of user {{ userName }}</h3>
     <table class="table">
         <thead class="table-dark">
+            <h3>Carros do cliente {{ user }}</h3>
             <tr>
-                <th>ID</th>
-                <th>Model</th>
-                <th>Year</th>
-                <th>Chassi</th>
+                <th>Cliente</th>
+                <th>Carro</th>
+                <th>Ano</th>
+                <th>Diária</th>
             </tr>
         </thead>
-        <tbody>{{ carsHtml }}</tbody>
+        <tbody>{{ rentHtml }}</tbody>
     </table>
 </body>
+
 </html>

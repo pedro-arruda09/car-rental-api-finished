@@ -1,8 +1,10 @@
-const AdminModel = require('../models/AdminModel');
+import UserModel from '../models/UserModel.js';
 
-module.exports = {
+class AuthService {
     store(data) {
         console.log(data);
-        return AdminModel.findOne(data)
+        return UserModel.findOne(data)
     }
 }
+
+export default new AuthService();

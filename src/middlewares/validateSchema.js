@@ -17,4 +17,4 @@ const Validate = schema => async (req, res, next) => {
 };
 
 
-module.exports = Validate;
+export default Validate;

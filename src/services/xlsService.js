@@ -1,5 +1,5 @@
-const UserModel = require('../models/UserModel');
-const CarModel = require('../models/CarModel');
+import UserModel from '../models/UserModel.js';
+import CarModel from '../models/CarModel.js';
 
 const index = async (req, res) => {
 
@@ -21,6 +21,6 @@ const index = async (req, res) => {
     })
 };
 
-module.exports = {
+export default {
     index
 };

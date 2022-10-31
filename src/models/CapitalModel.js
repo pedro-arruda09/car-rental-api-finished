@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+import { Model, DataTypes } from 'sequelize';
 
-class Capital extends Model {
+export default class Capital extends Model {
     static init(sequelize) {
         super.init({
             name: { type: DataTypes.STRING },
@@ -14,5 +14,3 @@ class Capital extends Model {
         })
     }
 }
-
-module.exports = Capital;

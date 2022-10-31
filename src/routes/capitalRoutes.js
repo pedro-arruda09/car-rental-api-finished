@@ -1,18 +1,18 @@
-const express = require('express');
-const CapitalController = require('../controllers/CapitalController');
-const loginRequired = require('../middlewares/loginRequired');
-const Validate = require('../middlewares/validateSchema');
-const CapitalSchema = require('../schemas/CapitalSchema');
+import { Router } from 'express';
+import CapitalController from '../controllers/CapitalController.js';
+import loginRequired from '../middlewares/loginRequired.js';
+// import Validate from '../middlewares/validateSchema.js';
+import CapitalSchema from '../schemas/CapitalSchema.js';
 
-const routes = express.Router();
+const routes = new Router();
 
 routes.use(loginRequired)
 
-routes.get('/capitals', CapitalController.index);
-routes.get('/capitals/:id', Validate(CapitalSchema.show), CapitalController.show);
-routes.post('/capitals/', Validate(CapitalSchema.store), CapitalController.store);
+routes.get('/', CapitalController.index);
+// routes.get('/:id', Validate(CapitalSchema.show), CapitalController.show);
+// routes.post('/', Validate(CapitalSchema.store), CapitalController.store);
 routes.get('/suggest/', CapitalController.suggest);
-routes.put('/capitals/:id', Validate(CapitalSchema.update), CapitalController.update);
-routes.delete('/capitals/:id', Validate(CapitalSchema.delete), CapitalController.delete);
+// routes.put('/:id', Validate(CapitalSchema.update), CapitalController.update);
+// routes.delete('/:id', Validate(CapitalSchema.delete), CapitalController.delete);
 
-module.exports = routes;
+export default routes;

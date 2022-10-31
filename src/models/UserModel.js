@@ -1,7 +1,7 @@
-const { Model, DataTypes } = require('sequelize');
-const bcryptjs = require('bcryptjs');
+import { Model, DataTypes } from 'sequelize';
+import bcryptjs from 'bcryptjs';
 
-class User extends Model {
+export default class User extends Model {
     static init(sequelize) {
         super.init({
             name: {
@@ -9,6 +9,10 @@ class User extends Model {
                 defaultValue: '',
             },
             email: {
+                type: DataTypes.STRING,
+                defaultValue: '',
+            },
+            cpf: {
                 type: DataTypes.STRING,
                 defaultValue: '',
             },
@@ -40,5 +44,3 @@ class User extends Model {
         this.belongsTo(models.Admin, { foreignKey: 'admin_id', as: 'admin' });
     }
 };
-
-module.exports = User;

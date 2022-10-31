@@ -1,12 +1,13 @@
-const Yup = require('yup');
+import * as Yup from 'yup';
 
-const schema = {
+export default {
   store: {
     body: Yup.object().shape({
       model: Yup.string().required("Model is required.").min(3).max(255),
       year: Yup.number().required("Year is required."),
       chassi: Yup.string().required("Chassi is required.").min(17).max(17),
-      daily_price: Yup.number().required("Daily price is required.")
+      daily_price: Yup.number().required("Daily price is required."),
+      admin_id: Yup.number().required()
     })
   },
   update: {
@@ -31,5 +32,3 @@ const schema = {
     }),
   },
 }
-
-module.exports = schema;

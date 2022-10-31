@@ -1,11 +1,12 @@
-const { Model, DataTypes } = require('sequelize');
+import { Model, DataTypes } from 'sequelize';
 
-class UserRent extends Model {
+export default class UserRent extends Model {
     static init(sequelize) {
         super.init(
             {
                 rent_started_at: DataTypes.DATEONLY,
                 rent_end_at: DataTypes.DATEONLY,
+                rent_started_at: DataTypes.DATEONLY,
                 rent_returned_at: DataTypes.DATEONLY,
                 deleted_at: DataTypes.DATE,
                 daily_price: DataTypes.FLOAT,
@@ -22,4 +23,3 @@ class UserRent extends Model {
     }
 }
 
-module.exports = UserRent;

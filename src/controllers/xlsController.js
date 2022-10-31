@@ -1,6 +1,6 @@
-const xlsx = require('xlsx');
-const xlsService = require('../services/xlsService');
-const path = require('path');
+import xlsx from 'xlsx';
+import xlsService from '../services/xlsService.js';
+import path from 'path';
 
 const exportUsersToExcel = (user, workSheetColumnNames, workSheetName, filePath) => {
     const data = user.map(user => {
@@ -32,6 +32,6 @@ const index = async (req, res) => {
     return res.json(true);
 };
 
-module.exports = {
+export default {
     index
 };

@@ -1,8 +1,9 @@
-const capitalService = require('../services/capitalService');
-const utils = require('../utils/utils');
-const { Op, Sequelize } = require('sequelize');
+import capitalService from '../services/capitalService.js';
+import utils from '../utils/utils.js';
+import removeAccents from 'remove-accents';
+import { Op, Sequelize } from 'sequelize';
 
-module.exports = {
+class CapitalController {
     async index(req, res) {
         try {
             const capital = await capitalService.index();
@@ -11,7 +12,7 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, 'Unable to view capital');
         }
-    },
+    }
 
     async store(req, res) {
         try {
@@ -23,7 +24,7 @@ module.exports = {
         } catch (e) {
             res.status(500).json({ error: e.message });
         }
-    },
+    }
 
     async show(req, res) {
         try {
@@ -34,7 +35,7 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e)
         }
-    },
+    }
 
     async update(req, res) {
         try {
@@ -49,7 +50,7 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e)
         }
-    },
+    }
 
     async delete(req, res) {
         try {
@@ -61,11 +62,12 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e);
         }
-    },
+    }
 
     async suggest(req, res) {
-        const capitalName = (req.query.name)
-        const stateName = (req.query.state).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
+        const capitalName = (req.query.name);
+        // const stateName = (req.query.state);
         try {
             const capitals = await capitalService.suggest({
                 attributes: ['name', 'state'],
@@ -73,17 +75,19 @@ module.exports = {
                     name: {
                         [Op.iLike]: `%${capitalName}%`
                     },
-                    state: {
-                        [Op.iLike]: `%${stateName}%`
-                    }
+                    // state: {
+                    //     [Op.iLike]: `%${stateName}%`
+                    // }
                 }
             })
-
             return res.json(capitals);
+
         } catch (e) {
-            // console.log(e);
+            console.log(e);
         }
 
 
     }
 }
+
+export default new CapitalController();

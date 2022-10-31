@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+import { Model, DataTypes } from'sequelize';
 
-class Car extends Model {
+export default class Car extends Model {
     static init(sequelize) {
         super.init({
             model: { type: DataTypes.STRING },
@@ -19,6 +19,14 @@ class Car extends Model {
             daily_price: {
                 type: DataTypes.FLOAT,
                 defaultValue: ''
+            },
+            admin_id: {
+                type: DataTypes.INTEGER,
+                defaultValue: ''
+            },
+            is_rented: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
             }
         }, {
             sequelize,
@@ -29,5 +37,3 @@ class Car extends Model {
         this.belongsTo(models.Admin, { foreignKey: 'admin_id', as: 'admin' });
     }
 }
-
-module.exports = Car;

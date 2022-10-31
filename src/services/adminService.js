@@ -1,13 +1,13 @@
-const AdminModel = require('../models/AdminModel');
+import AdminModel from '../models/AdminModel.js';
 
-module.exports = {
+class AdminService {
     index(data) {
         return AdminModel.findAll(data);
-    },
+    }
 
     store(data) {
         return AdminModel.create(data);
-    },
+    }
 
     async show(filter) {
         const admin = await AdminModel.findOne({
@@ -19,14 +19,14 @@ module.exports = {
         }
 
         return admin;
-    },
+    }
 
     async update(filter, changes) {
         return AdminModel.update(changes, {
             where: filter,
             individualHooks: true
         });
-    },
+    }
 
     async delete(filter) {
         await this.show(filter);
@@ -36,3 +36,5 @@ module.exports = {
         });
     }
 };
+
+export default new AdminService();

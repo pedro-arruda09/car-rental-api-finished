@@ -1,13 +1,14 @@
-const express = require('express');
-const CarPhotoController = require('../controllers/CarPhotoController');
-const loginRequired = require('../middlewares/loginRequired');
+import { Router } from 'express';
+import CarPhotoController from '../controllers/CarPhotoController.js';
+import loginRequired from '../middlewares/loginRequired.js';
 
-const routes = express.Router();
+const routes = new Router();
 
 routes.use(loginRequired);
 
-routes.get('/car-photos/', CarPhotoController.index);
-routes.post('/car-photos/', CarPhotoController.store);
-routes.delete('/car-photos/:id', CarPhotoController.delete);
+routes.get('/', CarPhotoController.index);
+routes.post('/', CarPhotoController.store);
+routes.post('/update/:id', CarPhotoController.updateCars); 
+routes.delete('/:id', CarPhotoController.delete);
 
-module.exports = routes;
+export default routes;

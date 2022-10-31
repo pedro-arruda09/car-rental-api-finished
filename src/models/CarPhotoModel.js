@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+import { Model, DataTypes } from 'sequelize';
 
-class CarPhoto extends Model {
+export default class CarPhoto extends Model {
     static init(sequelize) {
         super.init({
             originalname: {
@@ -22,5 +22,3 @@ class CarPhoto extends Model {
         this.belongsTo(models.Car, { foreignKey: 'car_id', as: 'car' });
     }
 }
-
-module.exports = CarPhoto; 

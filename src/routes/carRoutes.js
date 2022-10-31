@@ -1,17 +1,19 @@
-const express = require('express');
-const CarController = require('../controllers/CarController');
-const loginRequired = require('../middlewares/loginRequired');
-const Validate = require('../middlewares/validateSchema');
-const CarSchema = require('../schemas/CarSchema');
+import { Router } from 'express';
+import CarController from '../controllers/CarController.js';
+import loginRequired from '../middlewares/loginRequired.js';
+import Validate from '../middlewares/validateSchema.js';
+import CarSchema from '../schemas/CarSchema.js';
 
-const routes = express.Router();
+const routes = new Router();
+
+routes.get('/find-photo', CarController.findPhoto);
 
 routes.use(loginRequired)
 
-routes.get('/cars', CarController.index);
-routes.get('/cars/:id', Validate(CarSchema.show), CarController.show);
-routes.post('/cars/', Validate(CarSchema.store), CarController.store);
-routes.put('/cars/:id', Validate(CarSchema.update), CarController.update);
-routes.delete('/cars/:id', Validate(CarSchema.delete), CarController.delete);
+routes.get('/', CarController.index);
+routes.get('/:id', Validate(CarSchema.show), CarController.show);
+routes.post('/', Validate(CarSchema.store), CarController.store);
+routes.put('/:id', Validate(CarSchema.update), CarController.update);
+routes.delete('/:id', Validate(CarSchema.delete), CarController.delete);
 
-module.exports = routes;
+export default routes;

@@ -1,8 +1,8 @@
-const express = require('express');
-const xlsController = require('../controllers/xlsController');
+import { Router } from 'express';
+import xlsController from '../controllers/xlsController.js';
 
-const routes = express.Router();
+const routes = new Router();
 
-routes.get('/xls', xlsController.index);
+routes.get('/', xlsController.index);
 
-module.exports = routes;
+export default routes;

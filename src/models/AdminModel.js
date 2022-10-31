@@ -1,7 +1,7 @@
-const { Model, DataTypes } = require('sequelize');
-const bcryptjs = require('bcryptjs');
+import { Model, DataTypes } from 'sequelize';
+import bcryptjs from 'bcryptjs';
 
-class Admin extends Model {
+export default class Admin extends Model {
     static init(sequelize) {
         super.init({
             name: {
@@ -42,5 +42,3 @@ class Admin extends Model {
         this.hasMany(models.Car, { foreignKey: 'admin_id', as: 'car' });
     }
 };
-
-module.exports = Admin;

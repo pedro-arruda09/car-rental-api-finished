@@ -1,6 +1,6 @@
-const Yup = require('yup');
+import * as Yup from 'yup';
 
-module.exports = {
+export default {
   store: {
     body: Yup.object().shape({
       name: Yup.string().required().min(3).max(255),

@@ -1,6 +1,6 @@
-const Yup = require('yup');
+import * as Yup from 'yup';
 
-const schema = {
+export default {
   store: {
     body: Yup.object().shape({
       name: Yup.string().required("Name is required.").min(3).max(255),
@@ -32,5 +32,3 @@ const schema = {
     })
   }
 }
-
-module.exports = schema;

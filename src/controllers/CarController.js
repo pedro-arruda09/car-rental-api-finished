@@ -1,24 +1,24 @@
-const CarService = require('../services/carService');
-const utils = require('../utils/utils')
+import carService from '../services/carService.js';
+import utils from '../utils/utils.js';
 
-module.exports = {
+class CarController {
     async index(req, res) {
         try {
-            const cars = await CarService.index({
-                admin_id: req.adminId
+            const cars = await carService.index({
+                // admin_id: req.params.admin_id
             });
-
             return utils.handleResponse(res, cars);
         } catch (e) {
+            console.log(e);
             return utils.handleError(res, 'Unable to view cars.')
         }
-    },
+    }
 
     async store(req, res) {
         try {
-            const createCar = await CarService.store({
+            const createCar = await carService.store({
                 ...req.data,
-                admin_id: req.adminId
+                admin_id: req.body.admin_id
             });
 
             return utils.handleResponse(res, createCar);
@@ -26,11 +26,11 @@ module.exports = {
             console.log(e);
             res.status(500).json({ error: e.message });
         }
-    },
+    }
 
     async show(req, res) {
         try {
-            const car = await CarService.show({
+            const car = await carService.show({
                 id: req.params.id,
                 admin_id: req.adminId
             });
@@ -38,20 +38,20 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e)
         }
-    },
+    }
 
     async update(req, res) {
         try {
             const ID = req.data.id;
             const admin_id = req.adminId;
 
-            await CarService.update(req.data, ID, admin_id);
+            await carService.update(req.data, ID, admin_id);
 
             return utils.handleResponse(res, { updated_car: true });
         } catch (e) {
             return utils.handleError(res, e);
         }
-    },
+    }
 
     async delete(req, res) {
         try {
@@ -61,7 +61,7 @@ module.exports = {
                 })
             }
 
-            await CarService.delete({
+            await carService.delete({
                 id: req.params.id,
                 admin_id: req.adminId
             });
@@ -73,5 +73,16 @@ module.exports = {
         }
     }
 
+    async findPhoto(req, res) {
+        try {
+            const carPhoto = await carService.findPhoto();
+            return utils.handleResponse(res, carPhoto);
+        } catch (e) {
+            console.log(e);
+            return utils.handleError(res, 'Unable to view cars.')
+        }
+    }
 
 };
+
+export default new CarController();

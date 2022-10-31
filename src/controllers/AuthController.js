@@ -1,7 +1,7 @@
-const authService = require('../services/authService');
-const jwt = require('jsonwebtoken');
-
-module.exports = {
+import authService from '../services/authService.js';
+import jwt from 'jsonwebtoken';
+ 
+class AuthController {
     async store(req, res) {
         const { email = '', password = '' } = req.body;
 
@@ -33,3 +33,5 @@ module.exports = {
         return res.json({ token: token });
     }
 }
+
+export default new AuthController();

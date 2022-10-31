@@ -1,11 +1,11 @@
-const express = require('express');
-const pdfController = require('../controllers/pdfController');
-// const loginRequired = require('../middlewares/loginRequired');
+import { Router } from 'express';
+import pdfController from '../controllers/pdfController.js';
+// import loginRequired from '../middlewares/loginRequired.js';
 
-const routes = express.Router();
+const routes = new Router();
 
 // routes.use(loginRequired);
 
-routes.get('/pdf', pdfController.index);
+routes.get('/', pdfController.index);
 
-module.exports = routes;
+export default routes;

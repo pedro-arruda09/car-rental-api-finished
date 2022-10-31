@@ -1,11 +1,11 @@
-const Sequelize = require('sequelize');
-const dbConfig = require('../config/database');
-const Admin = require('../models/AdminModel');
-const Car = require('../models/CarModel');
-const CarPhoto = require('../models/CarPhotoModel');
-const Capital = require('../models/CapitalModel');
-const User = require('../models/UserModel');
-const UserRent = require('../models/UserRentModel');
+import Sequelize from 'sequelize';
+import dbConfig from '../config/database.js';
+import Admin from '../models/AdminModel.js';
+import Car from '../models/CarModel.js';
+import CarPhoto from '../models/CarPhotoModel.js';
+import Capital from '../models/CapitalModel.js';
+import User from '../models/UserModel.js';
+import UserRent from '../models/UserRentModel.js';
 
 const Models = [Admin, Car, CarPhoto, Capital, User, UserRent];
 
@@ -14,4 +14,4 @@ const connection = new Sequelize(dbConfig);
 Models.forEach(model => model.init(connection));
 Models.forEach(model => model.associate && model.associate(connection.models));
 
-module.exports = connection;
+export default connection;

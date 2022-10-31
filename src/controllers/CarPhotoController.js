@@ -1,17 +1,17 @@
-const multer = require('multer');
-const multerConfig = require('../config/multerConfig');
-const utils = require('../utils/utils');
-const carPhotoService = require('../services/carPhotoService');
-const upload = multer(multerConfig).single('bookCover');
+import multer from 'multer';
+import multerConfig from '../config/multerConfig.js';
+import utils from '../utils/utils.js';
+import carPhotoService from '../services/carPhotoService.js'
+const upload = multer(multerConfig).single('carPhoto');
 
-module.exports = {
+class CarPhotoController {
 
   async index(req, res) {
-    const book_covers = await carPhotoService.index({
+    const car_photo = await carPhotoService.index({
       attributes: ['originalname']
     });
-    return utils.handleResponse(res, book_covers)
-  },
+    return utils.handleResponse(res, car_photo)
+  }
 
   async store(req, res) {
     return upload(req, res, async (error) => {
@@ -24,28 +24,44 @@ module.exports = {
 
       try {
         const { originalname, filename } = req.file;
-        const { book_id } = req.body;
-        await carPhotoService.store({ originalname, filename, book_id, admin_id: req.adminId })
-        return utils.handleResponse(res, 'The book cover was registered.')
+        const { car_id } = req.body;
+        await carPhotoService.store({ originalname, filename, car_id })
+        return utils.handleResponse(res, 'The car photo was registered.')
       } catch (e) {
         return utils.handleError(res, e);
       }
     })
-  },
+  }
+
+  async updateCars(req, res) {
+    try {
+      await carPhotoService.updateCars({
+        id: req.params.id,
+        car_id: req.body.car_id
+      })
+      return res.json("Car update made");
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        error: "This update cannot be made",
+      });
+    }
+  }
 
   async delete(req, res) {
     try {
       await carPhotoService.delete({
         where: {
           id: req.params.id,
-          admin_id: req.adminId
         }
       });
 
-      return utils.handleResponse(res, 'The book cover was deleted succesfully.');
+      return utils.handleResponse(res, 'The car photo was deleted succesfully.');
     } catch (e) {
       console.log(e);
       return utils.handleError(res, e);
     }
-  },
-}
+  }
+};
+
+export default new CarPhotoController();
