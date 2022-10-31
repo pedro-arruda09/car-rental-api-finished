@@ -65,9 +65,10 @@ class CapitalController {
     }
 
     async suggest(req, res) {
-
+        const accentRemoved = removeAccents(req.query.name);
+        const accentRemoved2 = removeAccents(req.query.state);
         const capitalName = (req.query.name);
-        // const stateName = (req.query.state);
+        const stateName = (req.query.state);
         try {
             const capitals = await capitalService.suggest({
                 attributes: ['name', 'state'],
@@ -75,9 +76,9 @@ class CapitalController {
                     name: {
                         [Op.iLike]: `%${capitalName}%`
                     },
-                    // state: {
-                    //     [Op.iLike]: `%${stateName}%`
-                    // }
+                    state: {
+                        [Op.iLike]: `%${stateName}%`
+                    }
                 }
             })
             return res.json(capitals);
