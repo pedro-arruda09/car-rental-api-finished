@@ -1,6 +1,5 @@
-import sequelize from 'sequelize';
+import { literal, Op } from 'sequelize';
 import CapitalModel from '../models/CapitalModel.js';
-import removeAccents from 'remove-accents';
 
 class CapitalService {
 
@@ -36,9 +35,19 @@ class CapitalService {
     });
   }
 
-  suggest(data) {
-    console.log(data);
-    return CapitalModel.findAll(data);
+  suggest(search) {
+    return CapitalModel.findAll({
+      attributes: ['id', 'name'],
+      where: {
+        [Op.iLike]: literal(`unaccent(name) ILIKE unaccent(:search)`),
+      },
+      replacements: {
+        search: `%${search}%`
+      },
+      logging: true,
+      raw: true,
+      limit: 10
+    });
   }
 }
 

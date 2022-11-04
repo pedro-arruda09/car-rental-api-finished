@@ -24,6 +24,18 @@ export default class User extends Model {
                 type: DataTypes.VIRTUAL,
                 defaultValue: '',
             },
+            password_reset_token: {
+                type: DataTypes.STRING,
+                defaultValue: null,
+            },
+            password_reset_expires: {
+                type: DataTypes.DATE,
+                defaultValue: null,
+            },
+            is_blocked: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+            }
         }, {
             sequelize,
             paranoid: true,

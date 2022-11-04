@@ -1,8 +1,16 @@
 import authService from '../services/authService.js';
-import jwt from 'jsonwebtoken';
  
 class AuthController {
     async store(req, res) {
+        try {
+            const token = await authService.store(req.body);
+        
+            return res.json(token);
+        } catch(e) {
+            console.log(e);
+           return res.status(400).json(e.message);
+        }
+
         const { email = '', password = '' } = req.body;
 
         if (!email || !password) {

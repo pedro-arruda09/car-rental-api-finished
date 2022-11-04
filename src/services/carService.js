@@ -14,7 +14,7 @@ class CarService {
 
     async show(filter) {
         const car = await CarModel.findOne({
-            where: filter
+            where: filter,
         });
 
         if (!car) {
@@ -45,9 +45,20 @@ class CarService {
         });
     }
 
-    findPhoto () {
-        return CarPhotoModel.findAll({
-            attributes: ['originalname', 'car_id']
+    showFull (id) {
+        console.log(id);
+        return CarPhotoModel.findOne({
+            attributes: ['originalname'],
+            where: {
+                car_id: id
+            }, 
+            include: {
+                model: CarModel,
+                where: {
+                    id: id
+                },
+                as: 'car'
+            }
         });
     }
 };

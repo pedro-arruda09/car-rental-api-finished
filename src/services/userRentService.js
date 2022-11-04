@@ -1,6 +1,7 @@
 import UserRentModel from '../models/UserRentModel.js';
 import UserModel from '../models/UserModel.js';
 import CarModel from '../models/CarModel.js';
+import CarPhotoModel from '../models/CarPhotoModel.js';
 import moment from 'moment';
 
 class UserRentService {
@@ -8,12 +9,14 @@ class UserRentService {
         return UserRentModel.findAll(data);
     }
 
-    async rent({ user_id, car_id, rent_started_at, rent_end_at }) {
+    async rent({ user_id, car_id, rent_started_at, rent_end_at, city }) {
         const cars = await CarModel.count({
             where: {
                 id: car_id,
             }
         });
+
+        console.log(city);
 
         if (cars !== car_id.length) {
             throw new Error('This car is not available.');
@@ -47,9 +50,12 @@ class UserRentService {
                 user_id: user_id,
                 car_id: carId,
                 rent_started_at: rent_started_at,
-                rent_end_at: rent_end_at
+                rent_end_at: rent_end_at,
+                city: city
             })
         });
+
+        console.log(carsToRent);
 
         await CarModel.update({
             is_rented: true 
@@ -63,17 +69,6 @@ class UserRentService {
     }
 
     async returnCar({ id, car_id }) {
-        const totalRents = await UserRentModel.count({
-            where: {
-                id: id,
-                car_id: car_id
-            }
-        });
-        console.log(totalRents);
-
-        if (totalRents !== car_id.length) {
-            throw new Error("This rent was already made!")
-        }
 
         const user_rents = await UserRentModel.findOne({
             where: {
@@ -88,7 +83,6 @@ class UserRentService {
         const returnDate = moment();
         const result = returnDate.diff(rentStartDate, 'hours');
         const totalPrice = (result / 24) * daily_price;
-        console.log(totalPrice);
 
         await CarModel.update({
             is_rented: false
@@ -122,17 +116,36 @@ class UserRentService {
                 as: 'user',
             }, {
                 model: CarModel,
-                attributes: ['model', 'year', 'daily_price'],
-                as: 'car'
+                attributes: ['id', 'model', 'year', 'daily_price'],
+                as: 'car',
             }],
             raw: true,
             nest: true,
-            attributes: [],
+            attributes: ['id'],
         });
     }
 
     availableCars(data) {
-        return CarModel.findAll(data);
+        return CarPhotoModel.findAll({
+            attributes: ['originalname'],
+            include: {
+                model: CarModel,
+                where: {
+                    is_rented: false
+                },
+                as: 'car'
+            }
+        });
+    }
+
+    rentTotal({ id }) {
+        return UserRentModel.findOne({
+            where: {
+                id: id
+            },
+            paranoid: false,
+            attributes: ['total_price']
+        })
     }
 };
 

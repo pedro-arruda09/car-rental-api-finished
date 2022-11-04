@@ -5,9 +5,10 @@ import Car from '../models/CarModel.js';
 import CarPhoto from '../models/CarPhotoModel.js';
 import Capital from '../models/CapitalModel.js';
 import User from '../models/UserModel.js';
+import UserAccessLogs from '../models/UserAccessLogsModel.js';
 import UserRent from '../models/UserRentModel.js';
 
-const Models = [Admin, Car, CarPhoto, Capital, User, UserRent];
+const Models = [Admin, Car, CarPhoto, Capital, User, UserRent, UserAccessLogs];
 
 const connection = new Sequelize(dbConfig);
 

@@ -28,7 +28,7 @@ export default {
   },
   suggest: {
     query: Yup.object().shape({
-      name: Yup.string().required()
+      search: Yup.string().required()
     })
   }
 }

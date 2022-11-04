@@ -1,7 +1,5 @@
 import capitalService from '../services/capitalService.js';
 import utils from '../utils/utils.js';
-import removeAccents from 'remove-accents';
-import { Op, Sequelize } from 'sequelize';
 
 class CapitalController {
     async index(req, res) {
@@ -65,22 +63,11 @@ class CapitalController {
     }
 
     async suggest(req, res) {
-        const accentRemoved = removeAccents(req.query.name);
-        const accentRemoved2 = removeAccents(req.query.state);
-        const capitalName = (req.query.name);
-        const stateName = (req.query.state);
+        const search = req.filter.search;
+
         try {
-            const capitals = await capitalService.suggest({
-                attributes: ['name', 'state'],
-                where: {
-                    name: {
-                        [Op.iLike]: `%${capitalName}%`
-                    },
-                    state: {
-                        [Op.iLike]: `%${stateName}%`
-                    }
-                }
-            })
+            const capitals = await capitalService.suggest(search)
+            
             return res.json(capitals);
 
         } catch (e) {

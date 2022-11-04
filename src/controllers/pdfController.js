@@ -1,7 +1,7 @@
 import pdfService from '../services/pdfService.js';
 import utils from '../utils/utils.js';
 
-export default {
+class pdfController {
 
     async index(req, res) {
         try {
@@ -15,3 +15,5 @@ export default {
         }
     }
 };
+
+export default new pdfController();

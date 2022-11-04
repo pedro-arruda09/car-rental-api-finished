@@ -10,7 +10,8 @@ export default class UserRent extends Model {
                 rent_returned_at: DataTypes.DATEONLY,
                 deleted_at: DataTypes.DATE,
                 daily_price: DataTypes.FLOAT,
-                total_price: DataTypes.FLOAT
+                total_price: DataTypes.FLOAT,
+                city: DataTypes.STRING
             }, {
             sequelize,
             paranoid: true,

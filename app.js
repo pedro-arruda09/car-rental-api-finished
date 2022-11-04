@@ -10,6 +10,8 @@ import capitalRoutes from './src/routes/capitalRoutes.js';
 import carPhotoRoutes from './src/routes/carPhotoRoutes.js';
 import carRoutes from './src/routes/carRoutes.js';
 import pdfRoutes from './src/routes/pdfRoutes.js';
+import recoveryRoutes from './src/routes/recoveryRoutes.js';
+import userAccessLogsRoutes from './src/routes/userAccessLogsRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
 import userRentRoutes from './src/routes/userRentRoutes.js';
 import xlsRoutes from './src/routes/xlsRoutes.js';
@@ -33,6 +35,8 @@ class App {
     this.app.use('/car-photos', carPhotoRoutes);
     this.app.use('/cars', carRoutes);
     this.app.use('/pdf', pdfRoutes);
+    this.app.use('/', recoveryRoutes);
+    this.app.use('/access_logs', userAccessLogsRoutes);
     this.app.use('/users', userRoutes);
     this.app.use('/user_rent', userRentRoutes);
     this.app.use('/xls', xlsRoutes);

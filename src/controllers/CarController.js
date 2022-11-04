@@ -32,7 +32,6 @@ class CarController {
         try {
             const car = await carService.show({
                 id: req.params.id,
-                admin_id: req.adminId
             });
             return utils.handleResponse(res, car);
         } catch (e) {
@@ -73,9 +72,9 @@ class CarController {
         }
     }
 
-    async findPhoto(req, res) {
+    async showFull(req, res) {
         try {
-            const carPhoto = await carService.findPhoto();
+            const carPhoto = await carService.showFull(req.params.id);
             return utils.handleResponse(res, carPhoto);
         } catch (e) {
             console.log(e);

@@ -6,13 +6,14 @@ import UserRentSchema from '../schemas/UserRentSchema.js';
 const routes = new Router();
 
 
+routes.get('/available', UserRentController.availableCars);
 routes.use(loginRequired);
 
 routes.get('/', UserRentController.index);
+routes.get('/total/:id', UserRentController.rentTotal);
 routes.get('/profile', UserRentController.userRents);
-routes.get('/available', UserRentController.availableCars);
 routes.post('/car_rent/', UserRentController.rent);
-routes.post('/car_return/:id/', UserRentController.returnCar);
+routes.post('/car_return/:id/:car_id', UserRentController.returnCar);
 
 
 export default routes;
