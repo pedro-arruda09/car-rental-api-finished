@@ -3,42 +3,13 @@ import authService from '../services/authService.js';
 class AuthController {
     async store(req, res) {
         try {
-            const token = await authService.store(req.body);
-        
+            const token = await authService.store(req.data);
+            
             return res.json(token);
         } catch(e) {
             console.log(e);
            return res.status(400).json(e.message);
         }
-
-        const { email = '', password = '' } = req.body;
-
-        if (!email || !password) {
-            return res.status(401).json({
-                errors: ['Invalid credentials.']
-            });
-        }
-
-        const user = await authService.store({ where: { email } });
-
-        if (!user) {
-            return res.status(401).json({
-                errors: ['User does not exist.']
-            });
-        }
-
-        if (!(await user.passwordIsValid(password))) {
-            return res.status(401).json({
-                errors: ['Invalid password.']
-            });
-        }
-
-        const { id } = user;
-        const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
-            expiresIn: process.env.TOKEN_EXPIRATION,
-        });
-
-        return res.json({ token: token });
     }
 }
 

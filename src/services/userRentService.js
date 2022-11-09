@@ -9,14 +9,12 @@ class UserRentService {
         return UserRentModel.findAll(data);
     }
 
-    async rent({ user_id, car_id, rent_started_at, rent_end_at, city }) {
+    async rent({ user_id, car_id, rent_started_at, rent_end_at, capital_id }) {
         const cars = await CarModel.count({
             where: {
                 id: car_id,
             }
         });
-
-        console.log(city);
 
         if (cars !== car_id.length) {
             throw new Error('This car is not available.');
@@ -51,11 +49,9 @@ class UserRentService {
                 car_id: carId,
                 rent_started_at: rent_started_at,
                 rent_end_at: rent_end_at,
-                city: city
+                capital_id: capital_id
             })
         });
-
-        console.log(carsToRent);
 
         await CarModel.update({
             is_rented: true 
@@ -81,8 +77,8 @@ class UserRentService {
         const daily_price = user_rents.daily_price;
         const rentStartDate = moment(user_rents.rent_started_at);
         const returnDate = moment();
-        const result = returnDate.diff(rentStartDate, 'hours');
-        const totalPrice = (result / 24) * daily_price;
+        const result = returnDate.diff(rentStartDate, 'days');
+        const totalPrice = result * daily_price;
 
         await CarModel.update({
             is_rented: false
@@ -125,7 +121,7 @@ class UserRentService {
         });
     }
 
-    availableCars(data) {
+    availableCars() {
         return CarPhotoModel.findAll({
             attributes: ['originalname'],
             include: {

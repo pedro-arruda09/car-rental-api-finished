@@ -4,7 +4,7 @@ class RecoveryController {
 
     async recovery (req, res) {
         try {
-            const user = await recoveryService.recovery(req.body);
+            const user = await recoveryService.recovery(req.data);
 
             return res.json(user)
         } catch(e) {
@@ -14,7 +14,7 @@ class RecoveryController {
 
     async validateToken (req, res) {
         try {
-            const validate = await recoveryService.validateToken(req.params.token);
+            const validate = await recoveryService.validateToken(req.filter.token);
 
             return res.json(validate);
         } catch (e) {
@@ -24,7 +24,7 @@ class RecoveryController {
 
     async changePassword (req, res) {
         try {
-            const changes = { password: req.body.password };
+            const changes = { password: req.data.password };
             const token = req.params.token;
             const ip = req.socket.remoteAddress;
 

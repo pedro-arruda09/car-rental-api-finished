@@ -3,15 +3,23 @@ import * as Yup from 'yup';
 export default {
   rent: {
     body: Yup.object().shape({
-      car_id: Yup.array().required(),
-    //   email: Yup.string().required(),
-    }),
+      car_id: Yup.array().of(Yup.number().min(1)).required(),
+      rent_started_at: Yup.date().required(),
+      rent_end_at: Yup.date().min(Yup.ref('rent_started_at'), "End date can't be before start date").required(),
+      capital_id: Yup.number().required()
+    }).noUnknown(),
   },
-//   returnCar: {
-//     body: Yup.object().shape({
-//       name: Yup.string().required().min(3).max(255),
-//       email: Yup.string().required(),
-//       password: Yup.string().nullable().min(6).max(50),
-//     }),     
-//   },
+
+  returnCar: {
+    params: Yup.object().shape({
+      id: Yup.number().required(),
+      car_id: Yup.number().required(),
+    }).noUnknown(),     
+  },
+
+  rentTotal: {
+    params: Yup.object().shape({
+      id: Yup.number().required()
+    }).noUnknown()
+  }
 }

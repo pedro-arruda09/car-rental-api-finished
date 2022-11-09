@@ -5,7 +5,7 @@ class CarController {
     async index(req, res) {
         try {
             const cars = await carService.index({
-                // admin_id: req.params.admin_id
+                // admin_id: req.filter.admin_id
             });
             return utils.handleResponse(res, cars);
         } catch (e) {
@@ -18,7 +18,7 @@ class CarController {
         try {
             const createCar = await carService.store({
                 ...req.data,
-                admin_id: req.body.admin_id
+                admin_id: 3
             });
 
             return utils.handleResponse(res, createCar);
@@ -31,7 +31,7 @@ class CarController {
     async show(req, res) {
         try {
             const car = await carService.show({
-                id: req.params.id,
+                id: req.filter.id,
             });
             return utils.handleResponse(res, car);
         } catch (e) {
@@ -54,14 +54,14 @@ class CarController {
 
     async delete(req, res) {
         try {
-            if (!req.params.id) {
+            if (!req.filter.id) {
                 return res.status(400).json({
                     errors: ['ID was not sent.']
                 })
             }
 
             await carService.delete({
-                id: req.params.id,
+                id: req.filter.id,
                 admin_id: req.adminId
             });
 
@@ -74,7 +74,7 @@ class CarController {
 
     async showFull(req, res) {
         try {
-            const carPhoto = await carService.showFull(req.params.id);
+            const carPhoto = await carService.showFull(req.filter.id);
             return utils.handleResponse(res, carPhoto);
         } catch (e) {
             console.log(e);

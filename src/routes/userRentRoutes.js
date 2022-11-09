@@ -9,11 +9,11 @@ const routes = new Router();
 routes.get('/available', UserRentController.availableCars);
 routes.use(loginRequired);
 
+routes.post('/car_rent/', Validate(UserRentSchema.rent), UserRentController.rent);
+routes.get('/total/:id', Validate(UserRentSchema.rentTotal), UserRentController.rentTotal);
+routes.post('/car_return/:id/:car_id', Validate(UserRentSchema.returnCar), UserRentController.returnCar);
 routes.get('/', UserRentController.index);
-routes.get('/total/:id', UserRentController.rentTotal);
 routes.get('/profile', UserRentController.userRents);
-routes.post('/car_rent/', UserRentController.rent);
-routes.post('/car_return/:id/:car_id', UserRentController.returnCar);
 
 
 export default routes;
