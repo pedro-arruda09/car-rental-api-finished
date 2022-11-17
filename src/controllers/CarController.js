@@ -24,7 +24,7 @@ class CarController {
             return utils.handleResponse(res, createCar);
         } catch (e) {
             console.log(e);
-            res.status(500).json({ error: e.message });
+            return utils.handleError(res, 'Unable to create car.')
         }
     }
 

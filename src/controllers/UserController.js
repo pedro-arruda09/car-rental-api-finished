@@ -1,6 +1,5 @@
 import userService from '../services/userService.js';
 import utils from '../utils/utils.js';
-import moment from 'moment';
 
 class UserController {
     async index(req, res) {

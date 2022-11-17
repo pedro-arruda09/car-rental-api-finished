@@ -14,7 +14,7 @@ export default class Car extends Model {
             },
             image_id: {
                 type: DataTypes.INTEGER,
-                defaultValue: ''
+                defaultValue: null
             },
             daily_price: {
                 type: DataTypes.FLOAT,

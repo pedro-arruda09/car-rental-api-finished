@@ -1,6 +1,6 @@
 import Yup from 'yup';
 
-export default {
+const schema = {
     recovery: {
         body: Yup.object({
             email: Yup.string().email().required(),
@@ -21,3 +21,5 @@ export default {
         }).noUnknown()
     },
 }
+
+export default schema;

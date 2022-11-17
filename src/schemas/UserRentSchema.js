@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export default {
+const schema = {
   rent: {
     body: Yup.object().shape({
       car_id: Yup.array().of(Yup.number().min(1)).required(),
@@ -23,3 +23,5 @@ export default {
     }).noUnknown()
   }
 }
+
+export default schema;

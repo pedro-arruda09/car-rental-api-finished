@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export default {
+const schema = {
   store: {
     body: Yup.object().shape({
       name: Yup.string().required("Name is required.").min(3).max(255),
@@ -32,3 +32,5 @@ export default {
     }).noUnknown()
   }
 }
+
+export default schema;

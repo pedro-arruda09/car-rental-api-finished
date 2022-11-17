@@ -15,6 +15,7 @@ export default class CarPhoto extends Model {
             sequelize,
             paranoid: true,
         });
+        
         return this;
     }
 

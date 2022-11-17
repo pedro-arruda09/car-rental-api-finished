@@ -10,13 +10,13 @@ class UserRentService {
     }
 
     async rent({ user_id, car_id, rent_started_at, rent_end_at, capital_id }) {
-        const cars = await CarModel.count({
+        const carAvailable = await CarModel.count({
             where: {
                 id: car_id,
             }
         });
 
-        if (cars !== car_id.length) {
+        if (carAvailable !== car_id.length) {
             throw new Error('This car is not available.');
         };
 
@@ -91,7 +91,6 @@ class UserRentService {
         await UserRentModel.update({
             rent_returned_at: returnDate,
             total_price: totalPrice,
-            deleted_at: moment(),
         }, {
             where: {
                 id: id
@@ -139,7 +138,6 @@ class UserRentService {
             where: {
                 id: id
             },
-            paranoid: false,
             attributes: ['total_price']
         })
     }
